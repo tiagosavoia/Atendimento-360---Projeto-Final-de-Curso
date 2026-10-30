@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>Atendimento 360 | Treinamento</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --fundo: #101827;
+      --painel: #192538;
+      --painel-claro: #202f45;
+      --texto: #f3f6fb;
+      --texto-suave: #a8b5c8;
+      --azul: #58a6ff;
+      --azul-escuro: #2878d0;
+      --verde: #35c98a;
+      --vermelho: #ff727d;
+      --borda: rgba(255,255,255,.09);
+      --sombra: 0 22px 55px rgba(0,0,0,.24);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 18px;
+      color: var(--texto);
+      background: radial-gradient(circle at 15% 0%, #1b3555 0, transparent 35%), var(--fundo);
+      font: 15px/1.55 Inter, "Segoe UI", Arial, sans-serif;
+    }
+    main { width: min(100%, 820px); margin: 0 auto; }
+    .topo { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; }
+    .marca { display:flex; align-items:center; gap:12px; }
+    .simbolo { display:grid; place-items:center; width:44px; height:44px; border-radius:14px; background:linear-gradient(145deg,var(--azul),#356bd8); font-size:21px; font-weight:800; box-shadow:0 8px 24px #2878d044; }
+    .marca strong { display:block; font-size:16px; letter-spacing:.2px; }
+    .marca small { color:var(--texto-suave); font-size:12px; }
+    .etiqueta { padding:7px 11px; border:1px solid var(--borda); border-radius:30px; color:var(--texto-suave); font-size:12px; }
+    .card { padding:clamp(20px,4vw,32px); margin-bottom:18px; border:1px solid var(--borda); border-radius:22px; background:linear-gradient(145deg,rgba(32,47,69,.97),rgba(25,37,56,.97)); box-shadow:var(--sombra); }
+    .card h1 { margin:0 0 9px; font-size:clamp(25px,5vw,34px); line-height:1.2; letter-spacing:-.8px; }
+    .card h2 { margin:0 0 14px; font-size:19px; }
+    p { color:var(--texto-suave); }
+    .intro { max-width:620px; margin:0 0 25px; }
+    .campo { display:block; margin:0 0 8px; color:#dce6f4; font-size:13px; font-weight:600; }
+    input { width:100%; min-height:50px; padding:0 15px; border:1px solid var(--borda); border-radius:12px; outline:none; background:#111d2d; color:var(--texto); font:inherit; }
+    input:focus, button:focus-visible { outline:3px solid #58a6ff66; outline-offset:3px; }
+    button { min-height:45px; padding:11px 16px; border:1px solid var(--borda); border-radius:12px; background:#263750; color:var(--texto); font-family:inherit; font-size:14px; font-weight:600; line-height:1.2; cursor:pointer; transition:transform .16s ease,background .16s ease,border-color .16s ease; }
+    button:hover:not(:disabled) { transform:translateY(-1px); border-color:#58a6ff88; background:#304764; }
+    button:disabled { cursor:default; opacity:.9; }
+    .primario { border:0; background:linear-gradient(135deg,var(--azul-escuro),#438fe9); color:white; box-shadow:0 8px 20px #2878d044; }
+    .primario:hover:not(:disabled) { background:linear-gradient(135deg,#3388e5,#5aa5fa); }
+    .acoes { display:flex; flex-wrap:wrap; gap:10px; margin-top:17px; }
+    .secao-titulo { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:13px; }
+    .secao-titulo h2 { margin:0; }
+    .vazio { margin:0; padding:14px; border:1px dashed var(--borda); border-radius:12px; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:12px 9px; border-bottom:1px solid var(--borda); text-align:left; }
+    th { color:var(--texto-suave); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; }
+    td:last-child,th:last-child { text-align:right; }
+    .posicao { color:var(--azul); font-weight:800; }
+    .linha-info { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:17px; color:var(--texto-suave); font-size:13px; }
+    .linha-info strong { color:var(--texto); }
+    .progresso { height:9px; overflow:hidden; border-radius:20px; background:#0e1928; }
+    .progresso span { display:block; width:0; height:100%; border-radius:20px; background:linear-gradient(90deg,var(--azul-escuro),#63c5ff); transition:width .15s linear; }
+    .questao-topo { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:24px 0 13px; }
+    .nivel { padding:6px 11px; border-radius:30px; background:#58a6ff18; color:#8cc5ff; font-size:12px; font-weight:700; }
+    .pergunta { margin:0 0 19px; font-size:clamp(19px,3.5vw,24px); line-height:1.35; letter-spacing:-.3px; }
+    .opcao { display:flex; align-items:center; gap:12px; width:100%; min-height:58px; margin:10px 0; padding:13px 15px; border:1px solid var(--borda); border-radius:13px; background:#172438; text-align:left; font-size:14px; font-weight:500; }
+    .letra { display:grid; flex:0 0 29px; place-items:center; width:29px; height:29px; border-radius:9px; background:#ffffff0d; color:#b9c9dd; font-size:12px; font-weight:800; }
+    .opcao.correta { border-color:#35c98a99; background:#35c98a18; }
+    .opcao.correta .letra { background:#35c98a; color:#08251a; }
+    .opcao.errada { border-color:#ff727d99; background:#ff727d18; }
+    .opcao.errada .letra { background:#ff727d; color:#321015; }
+    .retorno { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; min-height:48px; margin-top:17px; color:var(--texto-suave); }
+    .retorno strong { color:var(--texto); }
+    .metricas { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:20px 0; }
+    .metrica { padding:16px; border:1px solid var(--borda); border-radius:15px; background:#111d2d88; }
+    .metrica small { display:block; color:var(--texto-suave); font-size:12px; }
+    .metrica strong { display:block; margin-top:4px; font-size:25px; }
+    .conquistas { display:flex; flex-wrap:wrap; gap:8px; margin-top:9px; }
+    .conquista { padding:7px 11px; border:1px solid #58a6ff44; border-radius:30px; background:#58a6ff13; color:#a9d4ff; font-size:12px; }
+    .grafico { display:flex; align-items:flex-end; gap:10px; height:130px; padding:15px 8px 0; border-bottom:1px solid var(--borda); }
+    .barra-sessao { display:flex; flex:1; flex-direction:column; align-items:center; justify-content:flex-end; gap:7px; height:100%; min-width:0; }
+    .barra-sessao span { width:min(100%,34px); min-height:4px; border-radius:7px 7px 2px 2px; background:linear-gradient(180deg,#72c5ff,#2878d0); }
+    .barra-sessao small { color:var(--texto-suave); font-size:10px; }
+    footer { padding:10px 0 0; color:#718198; text-align:center; font-size:12px; }
+    @media(max-width:520px) { body{padding:20px 13px}.topo{align-items:flex-start}.etiqueta{font-size:10px}.card{border-radius:17px}.metricas{grid-template-columns:1fr 1fr}th,td{padding:10px 5px;font-size:13px}.retorno{align-items:stretch}.retorno button{width:100%} }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;transition:none!important} }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topo">
+      <div class="marca">
+        <div class="simbolo" aria-hidden="true">360</div>
+        <div><strong>Atendimento 360</strong><small>Treinamento de atendimento ao cliente</small></div>
+      </div>
+      <span class="etiqueta">Serious Game</span>
+    </header>
+    <div id="app" aria-live="polite"></div>
+    <footer>Projeto de conclusão de curso · Engenharia de Software</footer>
+  </main>
+
+  <script>
+    const questoes = [
+      {
+        nivel: 1,
+        pergunta: 'O cliente chega irritado porque o pedido atrasou. Qual deve ser sua primeira atitude?',
+        opcoes: ['Explicar que o atraso não foi culpa sua', 'Ouvir sem interromper e pedir desculpas pelo transtorno', 'Transferir o cliente para outro setor'],
+        correta: 1
+      },
+      {
+        nivel: 1,
+        pergunta: 'O cliente faz uma pergunta e você não sabe a resposta. O que fazer?',
+        opcoes: ['Inventar uma resposta aproximada', 'Dizer que vai verificar a informação e combinar um prazo de retorno', 'Informar que o assunto não é responsabilidade sua'],
+        correta: 1
+      },
+      {
+        nivel: 1,
+        pergunta: 'Como iniciar um atendimento por telefone?',
+        opcoes: ['Pedir logo o CPF do cliente', 'Aguardar o cliente falar primeiro', 'Cumprimentar, identificar-se e oferecer ajuda'],
+        correta: 2
+      },
+      {
+        nivel: 2,
+        pergunta: 'O cliente solicita um reembolso que está fora da política da empresa. Como agir?',
+        opcoes: ['Negar o pedido e encerrar o atendimento', 'Explicar a política com empatia e apresentar alternativas possíveis', 'Prometer o reembolso sem consultar as regras'],
+        correta: 1
+      },
+      {
+        nivel: 2,
+        pergunta: 'Dois clientes aguardam atendimento ao mesmo tempo no balcão. Qual é a melhor atitude?',
+        opcoes: ['Ignorar o segundo cliente até terminar o primeiro atendimento', 'Pedir ao primeiro cliente que volte em outro momento', 'Cumprimentar o segundo, explicar que será atendido e informar uma previsão'],
+        correta: 2
+      },
+      {
+        nivel: 2,
+        pergunta: 'Você percebe que cadastrou uma informação errada no perfil de um cliente. O que fazer?',
+        opcoes: ['Corrigir sem conferir com o cliente', 'Informar o ocorrido, corrigir o cadastro e confirmar o dado correto', 'Esperar o cliente perceber o erro'],
+        correta: 1
+      },
+      {
+        nivel: 3,
+        pergunta: 'O cliente ameaça cancelar o contrato e publicar uma reclamação nas redes sociais. Como agir?',
+        opcoes: ['Responder publicamente no mesmo tom', 'Bloquear o contato imediatamente', 'Manter a calma, ouvir, registrar o caso e acionar o responsável com prioridade'],
+        correta: 2
+      },
+      {
+        nivel: 3,
+        pergunta: 'A fila de atendimento aumentou e o tempo de espera está acima da meta. O que fazer?',
+        opcoes: ['Encerrar os atendimentos rapidamente, mesmo sem resolver', 'Buscar resolver no primeiro contato e avisar o supervisor sobre o aumento da demanda', 'Ignorar a fila e continuar sem reorganizar o trabalho'],
+        correta: 1
+      },
+      {
+        nivel: 3,
+        pergunta: 'Um cliente envia um dado pessoal sensível que não é necessário para o atendimento. Qual é a conduta correta?',
+        opcoes: ['Guardar o dado em uma planilha pessoal', 'Compartilhar a informação em um grupo da equipe', 'Solicitar apenas os dados necessários e utilizar os canais oficiais da empresa'],
+        correta: 2
+      },
+      {
+        nivel: 3,
+        pergunta: 'Após resolver um problema, o cliente continua demonstrando insatisfação. Como concluir o atendimento?',
+        opcoes: ['Encerrar a conversa porque o problema já foi resolvido', 'Confirmar se a solução atendeu à necessidade, esclarecer dúvidas e orientar sobre os próximos passos', 'Dizer que não há mais nada a fazer'],
+        correta: 1
+      }
+    ];
+
+    const TOTAL_QUESTOES = 10;
+    const TEMPO_POR_NIVEL = { 1: 20, 2: 15, 3: 10 };
+    const app = document.getElementById('app');
+    const letras = ['A', 'B', 'C'];
+    let nomeJogador = lerNomeSalvo();
+    let partida;
+    let relogio;
+
+    function lerDados(chave, padrao) {
+      try {
+        const valor = localStorage.getItem(chave);
+        return valor ? JSON.parse(valor) : padrao;
+      } catch (erro) {
+        return padrao;
+      }
+    }
+
+    function salvarDados(chave, valor) {
+      try {
+        localStorage.setItem(chave, JSON.stringify(valor));
+      } catch (erro) {
+        // O jogo continua funcionando mesmo se o navegador bloquear o armazenamento.
+      }
+    }
+
+    function lerNomeSalvo() {
+      const nomeNovo = localStorage.getItem('atendimento360_nome');
+      if (nomeNovo) return nomeNovo;
+      try { return JSON.parse(localStorage.getItem('user') || '""'); } catch (erro) { return ''; }
+    }
+
+    function lerPartidas() {
+      const atuais = lerDados('atendimento360_partidas', null);
+      if (atuais) return atuais;
+      const antigas = lerDados('sessions', []);
+      return antigas.map((sessao) => ({
+        nome: sessao.name, data: sessao.date, pontos: sessao.pts,
+        aproveitamento: sessao.acc, tempoMedio: sessao.avg, maiorNivel: sessao.max
+      }));
+    }
+
+    function mostrarInicio() {
+      clearInterval(relogio);
+      const sessoes = lerPartidas();
+      const melhores = {};
+
+      sessoes.forEach((sessao) => {
+        if (!melhores[sessao.nome] || melhores[sessao.nome].pontos < sessao.pontos) {
+          melhores[sessao.nome] = sessao;
+        }
+      });
+
+      const ranking = Object.values(melhores)
+        .sort((a, b) => b.pontos - a.pontos)
+        .slice(0, 5);
+
+      app.innerHTML = `
+        <section class="card">
+          <h1>Atender bem faz a diferença.</h1>
+          <p class="intro">Pratique situações comuns do atendimento ao cliente, tome decisões e acompanhe seu desempenho. São 10 questões, com tempo para responder e três níveis de dificuldade.</p>
+          <label class="campo" for="nome">Como podemos chamar você?</label>
+          <input id="nome" maxlength="30" autocomplete="name" placeholder="Digite seu nome" value="${escapar(nomeJogador)}">
+          <div class="acoes"><button class="primario" id="iniciar">Começar treinamento <span aria-hidden="true">→</span></button></div>
+        </section>
+        <section class="card">
+          <div class="secao-titulo"><h2>Ranking</h2><span class="etiqueta">Melhores pontuações</span></div>
+          ${ranking.length ? `<table><thead><tr><th>Posição</th><th>Participante</th><th>Pontos</th></tr></thead><tbody>${ranking.map((item, i) => `<tr><td class="posicao">${i + 1}º</td><td>${escapar(item.nome)}</td><td>${item.pontos}</td></tr>`).join('')}</tbody></table>` : '<p class="vazio">Ainda não há resultados. Faça a primeira partida e apareça por aqui.</p>'}
+        </section>`;
+
+      document.getElementById('iniciar').addEventListener('click', () => {
+        const campoNome = document.getElementById('nome');
+        const nome = campoNome.value.trim();
+        if (!nome) {
+          campoNome.focus();
+          return;
+        }
+        nomeJogador = nome;
+        localStorage.setItem('atendimento360_nome', nome);
+        iniciarPartida();
+      });
+      document.getElementById('nome').addEventListener('keydown', (evento) => {
+        if (evento.key === 'Enter') document.getElementById('iniciar').click();
+      });
+    }
+
+    function escapar(valor) {
+      return String(valor).replace(/[&<>"']/g, (caractere) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[caractere]);
+    }
+
+    function iniciarPartida() {
+      partida = {
+        nivel: 1,
+        rodada: 0,
+        pontos: 0,
+        acertos: 0,
+        sequencia: 0,
+        maiorNivel: 1,
+        tempos: [],
+        usadas: [],
+        questaoAtual: null,
+        limite: 0,
+        inicio: 0,
+        respondida: false
+      };
+      mostrarQuestao();
+    }
+
+    function escolherQuestao() {
+      const disponiveis = questoes
+        .map((questao, indice) => ({ questao, indice }))
+        .filter((item) => !partida.usadas.includes(item.indice));
+
+      disponiveis.sort((a, b) =>
+        Math.abs(a.questao.nivel - partida.nivel) - Math.abs(b.questao.nivel - partida.nivel)
+      );
+
+      const maisProximas = disponiveis.filter((item) =>
+        Math.abs(item.questao.nivel - partida.nivel) === Math.abs(disponiveis[0].questao.nivel - partida.nivel)
+      );
+      const escolhida = maisProximas[Math.floor(Math.random() * maisProximas.length)];
+      partida.usadas.push(escolhida.indice);
+      return escolhida.questao;
+    }
+
+    function mostrarQuestao() {
+      if (partida.rodada >= TOTAL_QUESTOES) {
+        finalizarPartida();
+        return;
+      }
+
+      clearInterval(relogio);
+      partida.questaoAtual = escolherQuestao();
+      partida.limite = TEMPO_POR_NIVEL[partida.questaoAtual.nivel];
+      partida.inicio = Date.now();
+      partida.respondida = false;
+
+      app.innerHTML = `
+        <section class="card">
+          <div class="linha-info"><span>Questão <strong>${partida.rodada + 1}</strong> de ${TOTAL_QUESTOES}</span><span>Pontuação: <strong>${partida.pontos} pts</strong></span></div>
+          <div class="progresso" aria-label="Progresso da partida"><span id="progresso" style="width:${partida.rodada / TOTAL_QUESTOES * 100}%"></span></div>
+          <div class="questao-topo"><span class="nivel">Nível ${partida.questaoAtual.nivel}</span><span class="etiqueta" id="tempo">${partida.limite}s restantes</span></div>
+          <h1 class="pergunta">${escapar(partida.questaoAtual.pergunta)}</h1>
+          <div id="opcoes">${partida.questaoAtual.opcoes.map((opcao, indice) => `
+            <button class="opcao" data-indice="${indice}"><span class="letra">${letras[indice]}</span><span>${escapar(opcao)}</span></button>
+          `).join('')}</div>
+          <div class="progresso" style="margin-top:19px"><span id="barra-tempo" style="width:100%"></span></div>
+          <div class="retorno" id="retorno" aria-live="polite"><span>Escolha a alternativa que considera mais adequada.</span></div>
+        </section>`;
+
+      document.querySelectorAll('.opcao').forEach((botao) => {
+        botao.addEventListener('click', () => responder(Number(botao.dataset.indice)));
+      });
+      atualizarTempo();
+      relogio = setInterval(atualizarTempo, 100);
+    }
+
+    function atualizarTempo() {
+      if (partida.respondida) return;
+      const restante = Math.max(0, partida.limite - (Date.now() - partida.inicio) / 1000);
+      const porcentagem = restante / partida.limite * 100;
+      document.getElementById('barra-tempo').style.width = `${porcentagem}%`;
+      document.getElementById('tempo').textContent = `${Math.ceil(restante)}s restantes`;
+      if (restante <= 0) responder(-1);
+    }
+
+    function responder(indiceEscolhido) {
+      if (partida.respondida) return;
+      partida.respondida = true;
+      clearInterval(relogio);
+
+      const tempoUsado = Math.min(partida.limite, (Date.now() - partida.inicio) / 1000);
+      const acertou = indiceEscolhido === partida.questaoAtual.correta;
+      partida.tempos.push(tempoUsado);
+
+      if (acertou) {
+        partida.acertos++;
+        partida.sequencia++;
+        partida.pontos += 10 * partida.questaoAtual.nivel + Math.round((1 - tempoUsado / partida.limite) * 5);
+      } else {
+        partida.sequencia = 0;
+      }
+
+      document.querySelectorAll('.opcao').forEach((botao, indice) => {
+        botao.disabled = true;
+        if (indice === partida.questaoAtual.correta) botao.classList.add('correta');
+        else if (indice === indiceEscolhido) botao.classList.add('errada');
+      });
+
+      if (acertou && partida.sequencia >= 2) {
+        partida.nivel = Math.min(3, partida.nivel + 1);
+        partida.sequencia = 0;
+      } else if (!acertou) {
+        partida.nivel = Math.max(1, partida.nivel - 1);
+      }
+      partida.maiorNivel = Math.max(partida.maiorNivel, partida.nivel);
+      partida.rodada++;
+
+      const mensagem = acertou
+        ? 'Muito bem! Você escolheu a melhor alternativa.'
+        : indiceEscolhido === -1
+          ? 'O tempo acabou. Confira a alternativa correta.'
+          : 'Não foi dessa vez. Confira a alternativa correta.';
+
+      document.getElementById('retorno').innerHTML = `
+        <span><strong>${acertou ? 'Resposta correta!' : 'Atenção!'}</strong> ${mensagem}</span>
+        <button class="primario" id="proxima">${partida.rodada === TOTAL_QUESTOES ? 'Ver resultado' : 'Continuar'} →</button>`;
+      document.getElementById('proxima').addEventListener('click', mostrarQuestao);
+      document.getElementById('proxima').focus();
+    }
+
+    function finalizarPartida() {
+      clearInterval(relogio);
+      const tempoMedio = partida.tempos.reduce((soma, tempo) => soma + tempo, 0) / TOTAL_QUESTOES;
+      const aproveitamento = Math.round(partida.acertos / TOTAL_QUESTOES * 100);
+      const sessoes = lerPartidas();
+      const resultado = {
+        nome: nomeJogador,
+        data: new Date().toLocaleDateString('pt-BR'),
+        pontos: partida.pontos,
+        aproveitamento,
+        tempoMedio: Number(tempoMedio.toFixed(1)),
+        maiorNivel: partida.maiorNivel
+      };
+      sessoes.push(resultado);
+      salvarDados('atendimento360_partidas', sessoes);
+
+      const minhasPartidas = sessoes.filter((sessao) => sessao.nome === nomeJogador).slice(-8);
+      const maiorPontuacao = Math.max(1, ...minhasPartidas.map((sessao) => sessao.pontos));
+      const conquistas = [];
+      if (partida.acertos === TOTAL_QUESTOES) conquistas.push('🏆 Sem erros');
+      if (tempoMedio < 6) conquistas.push('⚡ Reflexo rápido');
+      if (partida.maiorNivel === 3) conquistas.push('🚀 Nível máximo');
+      if (partida.acertos >= 8) conquistas.push('⭐ Bom desempenho');
+
+      app.innerHTML = `
+        <section class="card">
+          <span class="nivel">Treinamento concluído</span>
+          <h1 style="margin-top:15px">Parabéns, ${escapar(nomeJogador)}!</h1>
+          <p>Veja como foi seu desempenho nas 10 questões.</p>
+          <div class="metricas">
+            <div class="metrica"><small>Pontuação final</small><strong>${partida.pontos} pts</strong></div>
+            <div class="metrica"><small>Taxa de acerto</small><strong>${aproveitamento}%</strong></div>
+            <div class="metrica"><small>Tempo médio</small><strong>${tempoMedio.toFixed(1)}s</strong></div>
+            <div class="metrica"><small>Maior nível</small><strong>${partida.maiorNivel} / 3</strong></div>
+          </div>
+          <h2>Conquistas</h2>
+          <div class="conquistas">${conquistas.length ? conquistas.map((item) => `<span class="conquista">${item}</span>`).join('') : '<span class="etiqueta">Continue praticando para conquistar medalhas.</span>'}</div>
+        </section>
+        <section class="card">
+          <h2>Seu histórico de pontuação</h2>
+          <p>Últimas partidas registradas neste navegador.</p>
+          <div class="grafico">${minhasPartidas.map((sessao, indice) => `
+            <div class="barra-sessao" title="${sessao.pontos} pontos">
+              <span style="height:${Math.max(4, sessao.pontos / maiorPontuacao * 90)}%"></span>
+              <small>${indice + 1}</small>
+            </div>`).join('')}
+          </div>
+          <div class="acoes"><button class="primario" id="jogar-novamente">Jogar novamente</button><button id="voltar">Voltar ao início</button></div>
+        </section>`;
+
+      document.getElementById('jogar-novamente').addEventListener('click', iniciarPartida);
+      document.getElementById('voltar').addEventListener('click', mostrarInicio);
+    }
+
+    mostrarInicio();
+  </script>
+</body>
+</html>
